@@ -233,6 +233,12 @@ def parse_json_response(response_text: str) -> dict:
         else:
             json_str = response_text.strip()
         
+        # 制御文字を処理（改行を\\nに変換）
+        import re
+        # JSON文字列内の実際の改行を\\nにエスケープ
+        # まず、キーと値の間の改行を処理
+        json_str = re.sub(r':\s*"([^"]*)"', lambda m: ': "' + m.group(1).replace('\n', '\\n').replace('\r', '') + '"', json_str)
+        
         return json.loads(json_str)
     except (json.JSONDecodeError, IndexError) as e:
         st.error(f"JSON解析エラー: {e}")

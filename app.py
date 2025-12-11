@@ -423,12 +423,12 @@ def main():
     """Main application entry point."""
     
     st.set_page_config(
-        page_title="Kintone作成",
+        page_title="【作成】活動の記録",
         page_icon="icon.png",
         layout="centered"
     )
     
-    st.header("📊 Kintone作成")
+    st.header("【作成】活動の記録")
     st.caption("音声またはテキストで営業活動を報告し、Kintoneに自動登録します。")
     
     st.divider()

@@ -726,26 +726,13 @@ def main():
             with st.spinner("Kintoneに登録中..."):
                 file_keys = []
                 
-                # アップロードしたファイルをKintoneに添付
+                # アップロードしたファイルのみKintoneに添付
+                # （テキスト入力欄に直接入力した内容は添付しない）
                 file_path = st.session_state.get("uploaded_file_path")
                 file_name = st.session_state.get("uploaded_file_name")
                 if file_path and file_name:
                     st.info(f"ファイルをアップロード中: {file_name}")
                     file_key = upload_file_to_kintone(file_path, file_name)
-                    if file_key:
-                        file_keys.append(file_key)
-                
-                # テキストメモをファイルとして保存・アップロード（ファイルがない場合のみ）
-                text_content = st.session_state.get("text_content")
-                if text_content and not file_path:
-                    import tempfile
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    text_filename = f"memo_{timestamp}.txt"
-                    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
-                        f.write(text_content)
-                        text_path = f.name
-                    st.info(f"テキストメモをアップロード中: {text_filename}")
-                    file_key = upload_file_to_kintone(text_path, text_filename)
                     if file_key:
                         file_keys.append(file_key)
                 

@@ -675,58 +675,58 @@ def main():
     
     if "extracted_data" in st.session_state and st.session_state.extracted_data:
         st.divider()
-        st.subheader("4. 抽出結果の確認・編集")
+        st.subheader("4. Kintoneへ登録")
         
         data = st.session_state.extracted_data
         
-        # 基本情報（読み取り専用）
-        st.markdown("**基本情報**")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.text_input("取引先ID", value=data.get("取引先ID", ""), disabled=True)
-            st.text_input("新規営業件名", value=data.get("新規営業件名", ""), disabled=True)
-            st.text_input("対応日", value=data.get("対応日", ""), disabled=True)
-        with col2:
-            st.text_input("対応者", value=data.get("対応者", ""), disabled=True)
-            st.text_input("次回提案予定日", value=data.get("次回提案予定日", ""), disabled=True)
-            st.text_input("次回営業件名", value=data.get("次回営業件名", ""), disabled=True)
-        
-        st.markdown("**AI抽出内容（編集可能）**")
-        
-        # 編集可能フィールド
-        data["商談内容"] = st.text_area(
-            "商談内容",
-            value=data.get("商談内容", ""),
-            height=100
-        )
-        
-        data["現在の課題・問題点"] = st.text_area(
-            "現在の課題・問題点",
-            value=data.get("現在の課題・問題点", ""),
-            height=100
-        )
-        
-        data["競合・マーケット情報"] = st.text_area(
-            "競合・マーケット情報",
-            value=data.get("競合・マーケット情報", ""),
-            height=100
-        )
-        
-        data["次回提案内容"] = st.text_area(
-            "次回提案内容（より具体的に）",
-            value=data.get("次回提案内容", ""),
-            height=100
-        )
+        # 抽出結果を折りたたみで表示
+        with st.expander("抽出結果の確認・編集", expanded=False):
+            # 基本情報（読み取り専用）
+            st.markdown("**基本情報**")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.text_input("取引先ID", value=data.get("取引先ID", ""), disabled=True, key="view_client_id")
+                st.text_input("新規営業件名", value=data.get("新規営業件名", ""), disabled=True, key="view_sales")
+                st.text_input("対応日", value=data.get("対応日", ""), disabled=True, key="view_date")
+            with col2:
+                st.text_input("対応者", value=data.get("対応者", ""), disabled=True, key="view_staff")
+                st.text_input("次回提案予定日", value=data.get("次回提案予定日", ""), disabled=True, key="view_next_date")
+                st.text_input("次回営業件名", value=data.get("次回営業件名", ""), disabled=True, key="view_next_sales")
+            
+            st.markdown("**AI抽出内容（編集可能）**")
+            
+            # 編集可能フィールド
+            data["商談内容"] = st.text_area(
+                "商談内容",
+                value=data.get("商談内容", ""),
+                height=100,
+                key="edit_meeting"
+            )
+            
+            data["現在の課題・問題点"] = st.text_area(
+                "現在の課題・問題点",
+                value=data.get("現在の課題・問題点", ""),
+                height=100,
+                key="edit_issues"
+            )
+            
+            data["競合・マーケット情報"] = st.text_area(
+                "競合・マーケット情報",
+                value=data.get("競合・マーケット情報", ""),
+                height=100,
+                key="edit_competitor"
+            )
+            
+            data["次回提案内容"] = st.text_area(
+                "次回提案内容（より具体的に）",
+                value=data.get("次回提案内容", ""),
+                height=100,
+                key="edit_next"
+            )
         
         st.session_state.extracted_data = data
         
         st.divider()
-        
-        # =========================================================================
-        # SECTION 5: Kintone登録
-        # =========================================================================
-        
-        st.subheader("5. Kintoneへ登録")
         
         if st.button("📤 Kintoneに登録する", type="primary", use_container_width=True):
             with st.spinner("Kintoneに登録中..."):
